@@ -9,3 +9,11 @@ Plusieurs buts ici :
 
 2) JavaFX propose de très nombreux composants : conteneurs, élements graphiques (boutons, formes, ...), ansi que de nombreuses classes utilitaires (timer, loader, ...)
 
+Tu peux commencer à regarder les classes 
+- src/sample/Main.java
+- src/sample/Controller.java
+Et les classes Main_doc.java, Controller_doc.java associées
+
+par contre le fichier src/sample/sample.fxml est un fichier déclaratif, je te l'épargne. On regardera ensemble comment l'ouvrir de manière plus fun.
+
+Tu devrais pouvoir exécuter Main.java, sois directement, sois avec un lanceur d'application.
