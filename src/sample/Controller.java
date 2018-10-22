@@ -1,14 +1,20 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +31,14 @@ public class Controller implements Initializable {
 
     @FXML
     public Slider V1;
+    @FXML
+    public Slider V2;
+    @FXML
+    public Slider Slide1;
+    @FXML
+    public Button button1;
+    @FXML
+    public ListView<Integer>  list1;
 
     @FXML
     public Rectangle one;
@@ -34,6 +48,8 @@ public class Controller implements Initializable {
 
     @FXML
     public Rectangle three;
+    @FXML
+    public SVGPath svg;
 
     @FXML
     public ColorPicker C1;
@@ -47,6 +63,8 @@ public class Controller implements Initializable {
     DoubleProperty w2 = new SimpleDoubleProperty();
     DoubleProperty w3 = new SimpleDoubleProperty();
     DoubleProperty w3b = new SimpleDoubleProperty();
+    IntegerProperty s1 = new SimpleIntegerProperty();
+    ObservableList<Integer> obsListe = FXCollections.observableArrayList();
     Integer integer = 0;
 
     private AnimationTimer timer = new AnimationTimer() {
@@ -54,6 +72,14 @@ public class Controller implements Initializable {
         public void handle(long now) {
 
             delta = V1.getValue() / 10 + 0.05;
+            Slide1.valueProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                    if ((int)Math.round((Double)newValue) != (int)Math.round((Double)oldValue)){
+                        obsListe.add((int)Math.round((Double)newValue) * 10);
+                    }
+                }
+            });
 
             switch (integer){
                 case 0 : if (w2.get() < 64){
@@ -94,6 +120,8 @@ public class Controller implements Initializable {
 
     public void slide(){
 
+
+
         w2.setValue(one.getWidth());
         w3.setValue(three.getHeight());
         w3b.setValue(three.getLayoutY());
@@ -101,8 +129,8 @@ public class Controller implements Initializable {
         one.widthProperty().bind(w2);
         three.heightProperty().bind(w3);
         three.layoutYProperty().bind(w3b);
-
-
+        svg.opacityProperty().bind(V2.valueProperty());
+        button1.prefWidthProperty().bind(Slide1.valueProperty());
         timer.start();
 
 
@@ -127,6 +155,10 @@ public class Controller implements Initializable {
         C2.setValue(COLOR_2);
         C3.setValue(COLOR_3);
         C4.setValue(COLOR_4);
+        obsListe.add(0);
+        obsListe.add(1);
+        list1.setItems(obsListe);
+
 
         slide();
     }

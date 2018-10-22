@@ -33,7 +33,7 @@ public class Main_doc extends Application {
         // le fichier avec la déclaration des composants graphiques et leurs propriétés
         // on va les trouver dans un fichier nommé sample.xml
         // (le reste de la line ne fait que charger cette information et la rendre disponible dans un objet nommé 'root')
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
         // on donne un libellé à la fenêtre à afficher
         primaryStage.setTitle("Waiting ...");
         // puis une taille initiale
