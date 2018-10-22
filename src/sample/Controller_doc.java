@@ -35,7 +35,7 @@ public class Controller_doc implements Initializable {
     // Double est un type numérique pour les nombres décimaux
     private Double delta = 0.1;
 
-    // @FXML fait la liaison entre les éléments stockés dans sample.fxml et le code de cette classe
+    // @FXML fait la liaison entre les éléments stockés dans gui.fxml et le code de cette classe
     // tous les types d'éléments que l'on récupère ici viennent de javaFX :
     // - Slider est un curseur pour sélectionner une valeur
     // - Rectangle est une forme graphique
