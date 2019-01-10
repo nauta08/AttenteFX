@@ -8,10 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
@@ -38,7 +35,15 @@ public class Controller implements Initializable {
     @FXML
     public Button button1;
     @FXML
-    public ListView<Integer>  list1;
+    public Button button2;
+    @FXML
+    public ListView<String>  list1;
+    @FXML
+    public ListView<Rectangle>  list2;
+    @FXML
+    public Label op;
+    @FXML
+    public Label vit;
 
     @FXML
     public Rectangle one;
@@ -64,22 +69,19 @@ public class Controller implements Initializable {
     DoubleProperty w3 = new SimpleDoubleProperty();
     DoubleProperty w3b = new SimpleDoubleProperty();
     IntegerProperty s1 = new SimpleIntegerProperty();
-    ObservableList<Integer> obsListe = FXCollections.observableArrayList();
+    ObservableList<String> obsListe = FXCollections.observableArrayList();
+    ObservableList<Rectangle> obsListe2 = FXCollections.observableArrayList();
     Integer integer = 0;
+    Integer cycle= 0;
+
 
     private AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long now) {
 
+            cycle ++;
+
             delta = V1.getValue() / 10 + 0.05;
-            Slide1.valueProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    if ((int)Math.round((Double)newValue) != (int)Math.round((Double)oldValue)){
-                        obsListe.add((int)Math.round((Double)newValue) * 10);
-                    }
-                }
-            });
 
             switch (integer){
                 case 0 : if (w2.get() < 64){
@@ -129,8 +131,9 @@ public class Controller implements Initializable {
         one.widthProperty().bind(w2);
         three.heightProperty().bind(w3);
         three.layoutYProperty().bind(w3b);
-        svg.opacityProperty().bind(V2.valueProperty());
-        button1.prefWidthProperty().bind(Slide1.valueProperty());
+        svg.opacityProperty().bind(V2.valueProperty().divide(100));
+        op.textProperty().bind(V2.valueProperty().asString("Opacité (%.0f%%)"));
+        vit.textProperty().bind(V1.valueProperty().asString("Vitesse (%.0f)"));
         timer.start();
 
 
@@ -155,9 +158,29 @@ public class Controller implements Initializable {
         C2.setValue(COLOR_2);
         C3.setValue(COLOR_3);
         C4.setValue(COLOR_4);
-        obsListe.add(0);
-        obsListe.add(1);
+        obsListe.add("0");
+        obsListe.add("1");
         list1.setItems(obsListe);
+        list2.setItems(obsListe2);
+
+        Slide1.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if ((int)Math.round((Double)newValue) != (int)Math.round((Double)oldValue)){
+                obsListe.add("cycle " + cycle + " : " + Math.round((Double)newValue) * 10);
+            }
+        });
+
+        C1.valueProperty().addListener((observable, oldValue, newValue) -> {
+            obsListe2.add(new Rectangle(25, 25, newValue));
+        });
+
+        C2.valueProperty().addListener((observable, oldValue, newValue) -> {
+            obsListe2.add(new Rectangle(25, 25, newValue));
+        });
+        // ajouter ici les actions sur les choix de couleur (C3 et C4)
+        // afin d'ajouter les couleurs sélectionnées dans obsListe2
+
+        button1.setOnAction(event -> obsListe.clear());
+        // ajouter ici une action sur button2 qui videra obsListe2
 
 
         slide();
